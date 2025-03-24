@@ -56,5 +56,38 @@ export const mockQuizzes: Quiz[] = [
         description: 'Evaluate your knowledge of RESTful API principles and best practices.',
         questionCount: 17,
         completionCount: 63
+    },
+
+    {
+        id: '9',
+        name: 'Node.js Essentials',
+        description: 'Test your knowledge of Node.js including modules, file system, and server creation.',
+        questionCount: 15,
+        completionCount: 89
+    },
+
+    {
+        id: '10',
+        name: 'GraphQL Fundamentals',
+        description: 'Evaluate your understanding of GraphQL queries, mutations, schemas, and resolvers.',
+        questionCount: 12,
+        completionCount: 42
+    },
+
+    {
+        id: '11',
+        name: 'Docker & Containers',
+        description: 'Test your knowledge of Docker concepts, container management, and deployment strategies.',
+        questionCount: 20,
+        completionCount: 63
+    },
+
+    {
+        id: '12',
+        name: 'UI/UX Design Principles',
+        description: 'Assess your understanding of design principles, usability, accessibility, and user research methodologies.',
+        questionCount: 18,
+        completionCount: 124
     }
+
 ];

@@ -1,12 +1,126 @@
-import React from 'react';
+import React, { useState } from 'react';
+import QuizCatalog from './components/QuizCatalog';
+import QuizForm from './components/QuizForm';
+import {Quiz} from "./types";
+import { mockQuizzes } from './data/mockData';
 import './App.css';
+import './styles/QuizCatalog.css';
+import './styles/QuizForm.css';
+
+// App modes
+type AppMode = 'catalog' | 'create' | 'edit';
 
 const App: React.FC = () => {
-  return (
-      <div className='container'>
+    const [quizzes, setQuizzes] = useState<Quiz[]>(mockQuizzes);
+    const [currentMode, setCurrentMode] = useState<AppMode>('catalog');
+    const [currentQuiz, setCurrentQuiz] = useState<Quiz | undefined>(undefined);
 
-      </div>
-  )
-}
+    // Handler for creating a new quiz
+    const handleCreateQuiz = (quizData: Omit<Quiz, 'id' | 'completionCount'>) => {
+        const newQuiz: Quiz = {
+            id: Date.now().toString(), // Simple ID generation
+            ...quizData,
+            completionCount: 0 // New quiz has 0 completions
+        };
+
+        setQuizzes([...quizzes, newQuiz]);
+        setCurrentMode('catalog');
+    };
+
+    // Handler for updating an existing quiz
+    const handleUpdateQuiz = (quizData: Omit<Quiz, 'id' | 'completionCount'>) => {
+        if (!currentQuiz) return;
+
+        const updatedQuizzes = quizzes.map(quiz => {
+            if (quiz.id === currentQuiz.id) {
+                return {
+                    ...quiz,
+                    name: quizData.name,
+                    description: quizData.description,
+                    questionCount: quizData.questionCount
+                };
+            }
+            return quiz;
+        });
+
+        setQuizzes(updatedQuizzes);
+        setCurrentMode('catalog');
+        setCurrentQuiz(undefined);
+    };
+
+    // Handler for deleting a quiz
+    const handleDeleteQuiz = (id: string) => {
+        const confirmed = window.confirm('Are you sure you want to delete this quiz?');
+        if (confirmed) {
+            setQuizzes(quizzes.filter(quiz => quiz.id !== id));
+        }
+    };
+
+    // Handler for editing a quiz
+    const handleEditQuiz = (id: string) => {
+        const quizToEdit = quizzes.find(quiz => quiz.id === id);
+        if (quizToEdit) {
+            setCurrentQuiz(quizToEdit);
+            setCurrentMode('edit');
+        }
+    };
+
+    // Handler for running a quiz
+    const handleRunQuiz = (id: string) => {
+        console.log(`Running quiz with ID: ${id}`);
+        // In a real application, this would navigate to a page where users can take the quiz
+        alert(`Quiz ${id} started! (This would navigate to the quiz taking page in a real app)`);
+    };
+
+    // Render based on current mode
+    const renderContent = () => {
+        switch (currentMode) {
+            case 'create':
+                return (
+                    <QuizForm
+                        onSubmit={handleCreateQuiz}
+                        onCancel={() => setCurrentMode('catalog')}
+                    />
+                );
+
+            case 'edit':
+                return (
+                    <QuizForm
+                        quiz={currentQuiz}
+                        onSubmit={handleUpdateQuiz}
+                        onCancel={() => {
+                            setCurrentMode('catalog');
+                            setCurrentQuiz(undefined);
+                        }}
+                    />
+                );
+
+            case 'catalog':
+            default:
+                return (
+                    <>
+                        <div className="catalog-header">
+                            <h1 className="catalog-title">Quiz Catalog</h1>
+                            <button
+                                className="create-quiz-button"
+                                onClick={() => setCurrentMode('create')}
+                            >
+                                Create New Quiz
+                            </button>
+                        </div>
+
+                        <QuizCatalog />
+                    </>
+                );
+        }
+    };
+
+    return (
+        <div className="app-container">
+            {renderContent()}
+        </div>
+    );
+};
 
 export default App;
+
