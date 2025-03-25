@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import QuizCatalog from './components/QuizCatalog';
 import QuizForm from './components/QuizForm';
 import {Quiz} from "./types";
@@ -11,9 +11,30 @@ import './styles/QuizForm.css';
 type AppMode = 'catalog' | 'create' | 'edit';
 
 const App: React.FC = () => {
-    const [quizzes, setQuizzes] = useState<Quiz[]>(mockQuizzes);
+    const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const [currentMode, setCurrentMode] = useState<AppMode>('catalog');
     const [currentQuiz, setCurrentQuiz] = useState<Quiz | undefined>(undefined);
+
+    useEffect(() => {
+        const fetchQuizzes = async () => {
+            try {
+                const response = await fetch('https://questionnaire-app-back-a9da1902bdc4.herokuapp.com/quizzes'); // Change this URL to your deployed backend
+                if (!response.ok) {
+                    throw new Error('Failed to fetch quizzes');
+                }
+                const data: Quiz[] = await response.json();
+                setQuizzes(data);
+            } catch (err) {
+                setError((err as Error).message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchQuizzes();
+    }, []);
 
     // Handler for creating a new quiz
     const handleCreateQuiz = (quizData: Omit<Quiz, 'id' | 'completionCount'>) => {
@@ -114,6 +135,9 @@ const App: React.FC = () => {
                 );
         }
     };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
         <div className="app-container">
