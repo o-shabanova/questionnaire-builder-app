@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import QuizCatalog from "./components/QuizCatalog";
 import QuizForm from './components/QuizForm';
 import {Quiz} from "./types";
-// import { mockQuizzes } from './data/mockData';
 import './App.css';
 import './styles/QuizCatalog.css';
 import './styles/QuizForm.css';
@@ -39,9 +38,9 @@ const App: React.FC = () => {
     // Handler for creating a new quiz
     const handleCreateQuiz = (quizData: Omit<Quiz, 'id' | 'completionCount'>) => {
         const newQuiz: Quiz = {
-            id: Date.now().toString(), // Simple ID generation
+            id: Date.now().toString(),
             ...quizData,
-            completionCount: 0 // New quiz has 0 completions
+            completionCount: 0
         };
 
         setQuizzes([...quizzes, newQuiz]);
@@ -89,7 +88,6 @@ const App: React.FC = () => {
     // Handler for running a quiz
     const handleRunQuiz = (id: string) => {
         console.log(`Running quiz with ID: ${id}`);
-        // In a real application, this would navigate to a page where users can take the quiz
         alert(`Quiz ${id} started! (This would navigate to the quiz taking page in a real app)`);
     };
 

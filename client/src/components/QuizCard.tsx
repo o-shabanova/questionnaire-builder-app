@@ -1,4 +1,5 @@
 import {QuizCardProps} from "../types";
+import React from "react";
 
 const QuizCard: React.FC<QuizCardProps> = ({ quiz, onEdit, onRun, onDelete }) => {
     return (

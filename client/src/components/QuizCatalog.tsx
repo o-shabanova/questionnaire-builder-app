@@ -7,11 +7,10 @@ import Pagination from './Pagination';
 import '../styles/QuizCatalog.css';
 
 const QuizCatalog: React.FC<QuizCatalogProps> = ({ quizzes, onEdit, onRun, onDelete }) => {
-    // State for quizzes with initial data from mockData.ts
-    // const [quizzes, setQuizzes] = useState<Quiz[]>(quizzes);
+
     const [filteredQuizzes, setFilteredQuizzes] = useState<Quiz[]>(quizzes);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 9; // Show 9 items per page to ensure pagination is visible
+    const itemsPerPage = 9;
 
     // Calculate total pages
     const totalPages = Math.ceil(filteredQuizzes.length / itemsPerPage);
