@@ -22,6 +22,13 @@ export interface QuizCardProps {
     onDelete?: (id: string) => void;
 }
 
+export interface QuizCatalogProps {
+    quizzes: Quiz[];
+    onEdit?: (id: string) => void;
+    onRun?: (id: string) => void;
+    onDelete?: (id: string) => void;
+}
+
 export interface QuizFormProps {
     quiz?: Quiz; // Optional quiz for editing mode
     onSubmit: (quiz: Omit<Quiz, 'id' | 'completionCount'>) => void;

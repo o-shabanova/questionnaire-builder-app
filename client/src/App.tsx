@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import QuizCatalog from './components/QuizCatalog';
+import QuizCatalog from "./components/QuizCatalog";
 import QuizForm from './components/QuizForm';
 import {Quiz} from "./types";
-import { mockQuizzes } from './data/mockData';
+// import { mockQuizzes } from './data/mockData';
 import './App.css';
 import './styles/QuizCatalog.css';
 import './styles/QuizForm.css';
@@ -130,7 +130,11 @@ const App: React.FC = () => {
                             </button>
                         </div>
 
-                        <QuizCatalog />
+                        <QuizCatalog
+                            quizzes={quizzes}
+                            onEdit={handleEditQuiz}
+                            onRun={handleRunQuiz}
+                            onDelete={handleDeleteQuiz}/>
                     </>
                 );
         }
