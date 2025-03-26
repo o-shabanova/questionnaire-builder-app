@@ -8,10 +8,10 @@ const corsOptions = {
     origin: [
         'http://localhost:3001',
         'https://questionnaire-app-client-63ff70b3d682.herokuapp.com/'
-    ], // Allow specific frontend origins
+    ],
     methods: 'GET, POST, PUT, DELETE, OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
-    credentials: true, // If using cookies or authentication
+    credentials: true
 };
 
 app.use(cors(corsOptions));
@@ -26,7 +26,14 @@ app.options('*', (req, res) => {
 
 app.get('/quizzes', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM quizzes');
+        const result = await pool.query(`
+            SELECT id,
+                   name,
+                   description,
+                   questioncount   as "questionCount",
+                   completionCount as "completionCount"
+            FROM quizzes`
+        );
         res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
