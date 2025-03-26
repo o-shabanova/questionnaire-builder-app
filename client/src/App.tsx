@@ -69,10 +69,21 @@ const App: React.FC = () => {
     };
 
     // Handler for deleting a quiz
-    const handleDeleteQuiz = (id: string) => {
+    const handleDeleteQuiz = async (id: string) => {
         const confirmed = window.confirm('Are you sure you want to delete this quiz?');
         if (confirmed) {
-            setQuizzes(quizzes.filter(quiz => quiz.id !== id));
+            try {
+                const response = await fetch(`https://questionnaire-app-back-a9da1902bdc4.herokuapp.com/quizzes/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete quiz');
+                }
+
+            } catch (error) {
+                console.error('Error deleting quiz:', error);
+            }
         }
     };
 
